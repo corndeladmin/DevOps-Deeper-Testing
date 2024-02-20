@@ -4,7 +4,8 @@
   "description": "Explore the artillery tool",
   "main": "index.js",
   "scripts": {
-    "start": "artillery run first-test.yml"
+    "start": "artillery run first-test.yml",
+    "quick": "artillery quick"
   },
   "author": "",
   "license": "ISC",
