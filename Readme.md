@@ -12,13 +12,16 @@ Part 1 - End to End testing:
 * [Selenium](./e2e-selenium/Readme.md)
 * [Playwright](./playwright/Readme.md)
 
-Part 2 - Performance & security testing
+Part 2 - Performance & Load Testing
 * [Artillery](./artillery/Readme.md)
 
-Part 3 - Accessibility testing
+Part 3 - Performance & Accessibility testing
 * [Google Lighthouse](./lighthouse/Readme.md)
 
 ## Part 4 - Use the tools in anger!
 
-If you have time after exploring each of the tools, have a go at setting them up fresh for your Project Exercise codebase. What useful tests can you generate?
+If you have time after exploring each of the tools, have a go at setting them up fresh for your Project Exercise codebase (or indeed, for a work project). What useful tests can you generate?
 
+## Part 5 - Reflect
+
+Are these really necessary?
