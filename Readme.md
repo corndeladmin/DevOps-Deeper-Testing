@@ -17,3 +17,8 @@ Part 2 - Performance & security testing
 
 Part 3 - Accessibility testing
 * [Google Lighthouse](./lighthouse/Readme.md)
+
+## Part 4 - Use the tools in anger!
+
+If you have time after exploring each of the tools, have a go at setting them up fresh for your Project Exercise codebase. What useful tests can you generate?
+

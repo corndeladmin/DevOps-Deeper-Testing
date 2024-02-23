@@ -9,4 +9,8 @@ __pycache__
 answer*
 *.png
 
+# artillery
 output.json*
+
+# playwright
+test-results
