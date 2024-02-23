@@ -117,9 +117,54 @@ Ensure: report success or failure
 // discuss apdex
 https://www.artillery.io/docs/reference/extensions/apdex
 
-### Playwright
+### Making load more realistic with Playwright
 
-## Extending the test
+One problem with designing load tests is how you ensure the load pattern resembles real user usage. For example, suppose your load test demonstrates that your site can handle 2,000 requests per minute spread across a collection of 20 URLs.
 
-TODO:
-> Can we make smarter tests, e.g. navigating a few pages?
+* Are they the URLs that users actually hit?
+* For a user following a typical route through your site, do different URLs get hit equally often?
+* Have you got any traffic hitting assets that pages would load in turn, such as images or script files?
+
+One way to make the approach here more realistic can be to have artillery follow more realistic user journeys. In particular, Artillery offers the option to use Playwright to run through scripts.
+
+> If you haven't met Playwright before, it is best to complete [that exercise now](../playwright/Readme.md) and come back to this.
+
+Right now, Artillery only supports JavaScript (or, experimentally, TypeScript) Playwright scripts, so we can't directly use the scripts we created earlier (but we should also not assume that a right to use Playwright's site for testing means they are happy with us running high traffic tests!), so we'll create some new tests for Artillery's site.
+
+In order to do this, first create a new artillery config script in `artillery-playwright.yml`:
+```yml
+config:
+  target: https://www.artillery.io
+  # Load the Playwright engine:
+  engines:
+    playwright: {}
+  # Path to JavaScript file that defines Playwright test functions
+  processor: "./flows.js"
+scenarios:
+  - engine: playwright
+    testFunction: "myFlow"
+```
+
+Playwright now comes bundled with artillery, so we can immediately use it to start generating our new test:
+
+`npx playwright codegen artillery.io`
+
+Add the contents of that test to a new file called `flows.js`:
+```javascript
+module.exports = { myFlow }
+
+async function myFlow( page ) {
+  // test content goes here, e.g.
+  /*
+    await page.goto('https://www.artillery.io/');
+    await page.getByLabel('Main navigation').getByRole('link', { name: 'Cloud' }).click();
+    await page.getByLabel('Main navigation').getByRole('link', { name: 'Documentation' }).click();
+    await page.getByRole('link', { name: 'Why Artillery?' }).click();
+    await page.getByTitle('Artillery Best Practices').click();
+  */
+}
+```
+
+Take a look at the `first-test.yml`, and decide if you want to add any more structure to your test, for example do you want a series of phases?
+
+When you're ready, start your tests with `npx artillery run artillery-playwright.yml`.
