@@ -18,10 +18,13 @@ Part 2 - Performance & Load Testing
 Part 3 - Performance & Accessibility testing
 * [Google Lighthouse](./lighthouse/Readme.md)
 
-## Part 4 - Use the tools in anger!
+Optional Part 4 - Security Testing
+* [OWASP ZAP](./zap/Readme.md)
+
+## Part 5 - Use the tools in anger!
 
 If you have time after exploring each of the tools, have a go at setting them up fresh for your Project Exercise codebase (or indeed, for a work project). What useful tests can you generate?
 
-## Part 5 - Reflect
+## Part 6 - Reflect
 
 Are these really necessary?

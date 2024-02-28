@@ -1,5 +1,13 @@
 # Selenium
 
+## Before you start
+
+This assumes you have:
+- Poetry installed on your machine
+  - If not, install it [according to the instructions here](https://python-poetry.org/docs/#installation). 
+- Chrome installed
+  - The test can easily be adjusted for FireFox or Safari if you prefer those.
+
 ## What is Selenium?
 
 [Selenium](https://www.selenium.dev/) is a popular open-source UI testing library. It creates language-specific bindings for programmatically controlling a web browser so you can write tests in almost any mainstream programming language, including Python. Let’s look at how you can use Selenium, with Python, to automate UI interactions.
@@ -8,11 +16,7 @@ To run Selenium, you'll need a web driver for a browser that you have installed 
 
 ## Try it out
 
-This assumes you have poetry installed on your machine; if not, install it [according to the instructions here](https://python-poetry.org/docs/#installation). 
-
-The test as written also assume that you have Chrome installed, but offers alternatives for FireFox or Safari if you prefer those.
-
-Set up the project with `poetry install`.
+Set up the project with `poetry install` from the `e2e-selenium` folder.
 
 You should then be able to run the existing test with `poetry run pytest` - check that you can see a browser appear and navigate Google without input!
 
@@ -64,8 +68,14 @@ Now that it's working, try switching your driver into "headless mode" - this run
 ```
 </details>
 
+### Test your own sites
+
+Add a new test file in the `tests` folder, and point your test at another website, for example one that you work on or with. Can you get the test to navigate through a simple real user journey?
+
+> If you don't have an appropriate website to trial, we'll shortly use <demo.playwright.dev/todomvc> to test Playwright, so you can use that to get a comparison.
+
 ### Further reading
 
-TODO
-If you're interested:
-* Point to https://pytest-selenium.readthedocs.io/en/latest/user_guide.html
+- [Selenium's documentation](https://www.selenium.dev/documentation/)
+- [Selenium Pytest integration plugin](https://pytest-selenium.readthedocs.io/en/latest/user_guide.html)
+  - Adds a number of useful features to simplify management of large Selenium repositories

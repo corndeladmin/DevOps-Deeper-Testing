@@ -14,3 +14,11 @@ output.json*
 
 # playwright
 test-results
+
+# lighthouse
+out*.json
+lighthouse/*.html
+.lighthouseci
+
+# vscode
+.vscode

@@ -1,9 +1,12 @@
 # Playwright
 
-Like Selenium, Playwright is an end-to-end testing tool focused on writing tests that interact with a web browser.
+## Before you start
 
-TODO
-[See the basic actions here](https://playwright.dev/python/docs/writing-tests#basic-actions).
+As with Selenium, this assumes you have `poetry` installed. Unlike Selenium, Playwright will attempt to download a browser for you by default if it's not already installed.
+
+## What is Playwright?
+
+Like Selenium, Playwright is an end-to-end testing tool focused on writing tests that interact with a web browser. Playwright was released much more recently (Jan 2020) by Microsoft so is less mature, but does come with a number of additional features which we will explore.
 
 ## Try it out
 
@@ -26,11 +29,13 @@ E.g. create a test that:
 
 [More guidance on using the Codegen tool is available in the docs.](https://playwright.dev/python/docs/codegen-intro#running-codegen)
 
+If you're interested in seeing the [the list of basic actions you can find that in the Playwright docs.](https://playwright.dev/python/docs/writing-tests#basic-actions)
+
 ### Investigate Failures
 
 First, tweak your tests so that they fail, for example in the `test_get_started_link` test you could look for a link with `some text that doesn't exist on the page`.
 
-You should see a timeout error; no link with that text appeared in time, but the stack trace can't offer much more than that. Was the error a case of the page failing to load anything, or did someone just change a key piece of text?
+You should see a timeout error; no link with that text appeared in time, but the stack trace doesn't offer us much more context than that. Was the error a case of the page failing to load anything, or did someone just change a key piece of text?
 
 Investigating end-to-end test issues like this can often be a slow affair, involving running the tests locally in a non-headless mode, slowing them down or introducing breakpoints in order to let us diagnose the problem.
 
@@ -53,4 +58,6 @@ Have a play with the following debugging helpers:
 
 ### Further Reading
 
-?
+- Take a look at [the Playwright best practices](https://playwright.dev/docs/best-practices)
+- There's always one more: [Cypress](https://www.cypress.io/) is another popular end-to-end testing tool.
+  - Take a look through [Cypress' list of features](https://docs.cypress.io/guides/overview/why-cypress#Features) to get a quick comparison summary.

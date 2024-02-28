@@ -1,12 +1,18 @@
 # Artillery
 
+## Before you start
+
+This exercise assumes you have a recent version of Node/npm installed - [if not you can install that from here](https://nodejs.org/en/download).
+
 ## What is it?
 
 Artillery is a load testing library; it is designed for triggering large numbers of requests to a service and monitoring how the service under test handles the load.
 
 ### An aside on load testing
 
-Running load tests doesn't always have to be hard, but _designing_ good load tests typically is. 
+Running load tests doesn't always* have to be hard, but _designing_ good load tests typically is.
+
+*Particularly if you're testing at a low enough traffic level that a single machine can make sufficient requests.
 
 Before setting up load tests, consider what you're actually hoping to achieve with them:
 * Do you want to check the system is performing at its usual pace under normal load?
@@ -16,15 +22,24 @@ Before setting up load tests, consider what you're actually hoping to achieve wi
 
 Each of these tests will demand a slightly different configuration, and a different analysis of the results.
 
+We will discuss load testing more in future workshops.
+
 ## Alternatives?
-// TODO
-Gatling?
+
+Lots of alternative open-source load testing tools exist such as:
+* [JMeter](https://jmeter.apache.org/)
+* [Gatling](https://gatling.io/)
+* [k6](https://k6.io/open-source/)
+
+In addition, once we're reaching a stage where the requests need to be distributed across multiple machines, many more paid options exist to help you.
 
 ### Disclaimer
 
-You should be wary of just running load tests against arbitrary sites; this is potentially a criminal offence!
+A load test only differs from a Distributed-Denial-of-Service (DDoS) attack in intent - you should be wary of just running load tests against arbitrary sites; this could potentially be a criminal offence!
 
-Thankfully, Artillery offer a site that they host and allow us to use.
+Even testing your own applications can be subject to restrictions if you're hosting systems on a public cloud, e.g.AWS has clear policies on both [Network Stress Testing including load testing](https://aws.amazon.com/ec2/testing/) and [DDoS simulations](https://aws.amazon.com/security/ddos-simulation-testing/) - although note that both of these require significant traffic levels to be in violation.
+
+Thankfully, Artillery offer a site that they host and allow us to use for the sake of testing.
 
 ## Try it out
 
@@ -81,14 +96,16 @@ Take a moment to discuss this with your room, before you read on.
 <details> <summary>Why use p95 or p99?</summary> 
 
 In many scenarios, we care most about some form of _average_ result, but not always. In particular, it's easy for those to be skewed:
-* If one request takes 1 second, but nine requests take 10 milliseconds, the _mean_ is going to be ~100ms; quite a misleading average!
+* If one request takes 1 second, but nine requests take 10 milliseconds, the _mean_ is going to be ~100ms; which doesn't give us a representative picture of the user experience.
 * Likewise, the median can miss out a long tail; if 60% of results take 10ms, but 40% take 500ms, then a median of 10ms is equally misleading
 
-By comparison, a p95 of 50ms tells us that 95% of requests took under 50ms; it doesn't give us as much specific info, but it does assure us that most requests were met in time. 
+By comparison, a p95 of 50ms tells us that 95% of requests took under 50ms; it doesn't necessarily tell us what the most common experience looked like, but it does assure us that most requests were met within a defined timeframe. 
 
 Given that network response times are often quite variable - e.g. based on other traffic in the network, the route a packet takes, or even the physical location of the device testing - using this approach is a good way to reduce the noise but still focus on "did the majority of requests get satisified in a reasonable timeframe".
 
 </details>
+
+### Understanding our results
 
 As our load-testing jobs get longer, we could easily lose info from the outputted stats. Run the test again, but this time [add the `-o` flag and specify a json file](https://www.artillery.io/docs/reference/cli/run#--output---create-a-json-report) to write the summary results to.
 
@@ -103,23 +120,25 @@ You can view those stats better by generating a HTML page through the `report` o
 
 Next, we'll run through a similar example to [the Artillery tutorial](https://www.artillery.io/docs/get-started/first-test).
 
-Take a quick look at the `first-test.yml` file, and then trigger your first test with `npx artillery run first-test.yml`
+**Take a moment here to look at the `first-test.yml` file**, can you work out what's going to happen? When you have a hypothesis, then trigger your first test with `npx artillery run first-test.yml`
 
-As it runs, read [the Artillery docs about how Virtual Users work](https://www.artillery.io/docs/get-started/core-concepts#virtual-users). Note that a given "user" maintains its own cookies, so they can handle some degree of statefulness.
+This will take a minute or two, so as it runs, read [the Artillery docs about how Virtual Users work](https://www.artillery.io/docs/get-started/core-concepts#virtual-users). Note that a given "user" maintains its own cookies, so they can handle some degree of statefulness.
 
 Once the test has passed, review its results again.
 
 ### Plugins
 Enable the plugins section in the yml file, including the `apdex` and `ensure` sections, and run the test again.
 
-Ensure: report success or failure
-
-// discuss apdex
-https://www.artillery.io/docs/reference/extensions/apdex
+We will now see some additional behaviours:
+- [ensure](https://www.artillery.io/docs/reference/extensions/ensure) provides us an option to specify pass/fail criteria for our load test.
+  - For example, we have specified that 99% of responses need to be satisifed in under 100ms
+- [metrics-by-endpoint](https://www.artillery.io/docs/reference/extensions/metrics-by-endpoint) does what it says on the tin - you should see a breakdown of the results according to which precise URL endpoint was hit.
+- [apdex](https://www.artillery.io/docs/reference/extensions/apdex) comes from "Application Performance Index" and provides a method to convert our complex output of statistics into a simple summary score for our performance
+  - This determines whether users were "satisfied", "tolerant" or "frustrated" based on a threshold.
 
 ### Making load more realistic with Playwright
 
-One problem with designing load tests is how you ensure the load pattern resembles real user usage. For example, suppose your load test demonstrates that your site can handle 2,000 requests per minute spread across a collection of 20 URLs.
+One problem with designing load tests is in ensuring that the load pattern resembles real user usage. For example, suppose your load test demonstrates that your site can handle 2,000 requests per minute spread across a collection of 20 URLs.
 
 * Are they the URLs that users actually hit?
 * For a user following a typical route through your site, do different URLs get hit equally often?
@@ -127,9 +146,11 @@ One problem with designing load tests is how you ensure the load pattern resembl
 
 One way to make the approach here more realistic can be to have artillery follow more realistic user journeys. In particular, Artillery offers the option to use Playwright to run through scripts.
 
-> If you haven't met Playwright before, it is best to complete [that exercise now](../playwright/Readme.md) and come back to this.
+> If you haven't met Playwright before, it is recommended to complete [that exercise now](../playwright/Readme.md) and come back to this.
 
-Right now, Artillery only supports JavaScript (or, experimentally, TypeScript) Playwright scripts, so we can't directly use the scripts we created earlier (but we should also not assume that a right to use Playwright's site for testing means they are happy with us running high traffic tests!), so we'll create some new tests for Artillery's site.
+Right now, Artillery only supports JavaScript (or, experimentally, TypeScript) Playwright scripts, so we can't directly use the scripts we created earlier*, so we'll create some new tests for Artillery's site.
+
+> *And we should also not assume that permission to use Playwright's site for testing means they are happy with us running high traffic tests!
 
 In order to do this, first create a new artillery config script in `artillery-playwright.yml`:
 ```yml
@@ -142,29 +163,40 @@ config:
   processor: "./flows.js"
 scenarios:
   - engine: playwright
-    testFunction: "myFlow"
 ```
 
-Playwright now comes bundled with artillery, so we can immediately use it to start generating our new test:
+Playwright comes bundled with Artillery so there's no extra installation required, and we can immediately use it to start generating our new test:
 
 `npx playwright codegen artillery.io`
 
-Add the contents of that test to a new file called `flows.js`:
-```javascript
-module.exports = { myFlow }
+> Make sure that your Playwright output panel is set to "Node: Library" and isn't trying to use Python still, or the "Node: Test" option!
 
-async function myFlow( page ) {
-  // test content goes here, e.g.
-  /*
-    await page.goto('https://www.artillery.io/');
-    await page.getByLabel('Main navigation').getByRole('link', { name: 'Cloud' }).click();
-    await page.getByLabel('Main navigation').getByRole('link', { name: 'Documentation' }).click();
-    await page.getByRole('link', { name: 'Why Artillery?' }).click();
-    await page.getByTitle('Artillery Best Practices').click();
-  */
-}
+Copy the contents of that test and add it to a new file called `flows.js` that follows the structure below:
+```javascript
+const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch({
+    headless: false
+  });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.goto('https://www.artillery.io/');
+  await page.locator('#masthead').getByRole('button').click();
+  // ....
+
+  // ---------------------
+  await context.close();
+  await browser.close();
+})();
 ```
 
 Take a look at the `first-test.yml`, and decide if you want to add any more structure to your test, for example do you want a series of phases?
 
 When you're ready, start your tests with `npx artillery run artillery-playwright.yml`.
+
+## Further Reading
+
+You've now configured load tests that can run through a variety of scenarios. If you're interested:
+- Read through [the Artillery best practices](https://www.artillery.io/docs/get-started/best-practices)
+- Take a look at [an alternative tool](#alternatives)
