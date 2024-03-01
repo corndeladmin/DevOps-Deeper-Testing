@@ -1,0 +1,16 @@
+services:
+  zap:
+    image: softwaresecurityproject/zap-stable
+    volumes:
+      - ./mounted-directory:/zap/wrk
+    # command: tail -f /dev/null # zap-baseline.py -t http://juice:3000
+    command: zap-webswing.sh
+    depends_on:
+      - juice
+    ports:
+      - 8080:8080
+      - 8090:8090
+  juice:
+    image: bkimminich/juice-shop
+    ports:
+      - 3000:3000

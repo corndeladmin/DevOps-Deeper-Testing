@@ -22,3 +22,6 @@ lighthouse/*.html
 
 # vscode
 .vscode
+
+# zap
+mounted-directory
