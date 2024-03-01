@@ -8,6 +8,12 @@ Feel free to choose a different path through the exercises, but we recommend the
 
 This workshop assumes you have a recent version of node/npm installed. If not, you can install those [here](https://nodejs.org/en/download/).
 
+> Note that since we will be triggering a browser session from the command line in various exercises, WSL on Windows will not be an option.
+
+## Exercises
+
+> Each exercise is configured as a separate codebase so if you want VSCode to correctly handle intellisense etc., it is best to open each subfolder directly in VSCode during that exercise.
+
 Part 1 - End to End testing:
 * [Selenium](./e2e-selenium/Readme.md)
 * [Playwright](./playwright/Readme.md)

@@ -3,7 +3,7 @@ name = "playwright-testing"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
-readme = "README.md"
+readme = "Readme.md"
 packages = [
     { include = "tests" }
 ]

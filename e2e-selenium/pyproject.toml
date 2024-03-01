@@ -3,7 +3,7 @@ name = "e2e-selenium"
 version = "0.1.0"
 description = ""
 authors = ["Jack Mead <jack.mead@corndel.com>"]
-readme = "README.md"
+readme = "Readme.md"
 packages = [
     { include = "tests" }
 ]

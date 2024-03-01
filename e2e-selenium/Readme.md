@@ -39,17 +39,14 @@ You may want to look at the docs for:
 
 <details> <summary>Hint</summary>
 
-One way to do this is to find the first anchor tag (`<a>`) that has a href that doesn't contain the word `google`.
+Unfortunately, if you try getting the first `<a>` tag, you'll find it's not the desired search result.
+
+First we need to find a consistent route to navigate the HTML that we can describe. Can you find any ids that get us to the correct part of the page?
+
+One way to do this is to find the first anchor tag (`<a>`) that sits within the search results.
 
 We can do that either as part of a complex XPath string, or by iterating over anchor tags in Python.
 
-<details> <summary> Example XPath </summary> 
-
-```
-results = driver.find_elements(By.XPATH, '//a[not(contains(@href, "google")) and contains(@href, "http")]')
-```
-
-</details>
 </details>
 
 ### Save an output screenshot
@@ -72,7 +69,9 @@ Now that it's working, try switching your driver into "headless mode" - this run
 
 Add a new test file in the `tests` folder, and point your test at another website, for example one that you work on or with. Can you get the test to navigate through a simple real user journey?
 
-> If you don't have an appropriate website to trial, we'll shortly use <demo.playwright.dev/todomvc> to test Playwright, so you can use that to get a comparison.
+> If you don't have an appropriate website to trial, we'll shortly use [the Playwright demo site](https://demo.playwright.dev/todomvc) to test Playwright, so you can use that to get a comparison.
+
+> Alternatively, have a go at adding useful end-to-end tests to the [Chessington testing exercise](https://github.com/corndeladmin/Devops-Chessington-Python) - can you get Selenium to play out a game of chess?
 
 ### Further reading
 

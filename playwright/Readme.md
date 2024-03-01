@@ -16,9 +16,9 @@ Run `poetry run pytest` to execute the tests. Note that Playwright chooses to de
 
 ## Now it's your turn
 
-A nice feature of Playwright is the ability to generate the code for your tests by interacting with a browser directly. Give that a go, and add a new test exploring the Playwright demo site <demo.playwright.dev/todomvc> by using the `codegen` option:
+A nice feature of Playwright is the ability to generate the code for your tests by interacting with a browser directly. Give that a go, and add a new test exploring [the Playwright demo site](https://demo.playwright.dev/todomvc) by using the `codegen` option:
 ```
-poetry run playwright codegen demo.playwright.dev/todomvc
+poetry run playwright codegen --target python-pytest demo.playwright.dev/todomvc
 ```
 
 E.g. create a test that:
@@ -48,6 +48,8 @@ When your tests fail, Playwright offers a number of debug helpful options to spe
 # addopts = --browser firefox
 addopts = 
 ```
+
+> Note that this assumes you are running the tests from the terminal in the Playwright directory, or that you have opened the playwright subfolder directly in VSCode, otherwise VSCode won't correctly pick up this `pytest.ini` file.
 
 Have a play with the following debugging helpers:
 * Capturing a screenshot on failure by setting the `--screenshot` flag to `only-on-failure` (or `on`)
