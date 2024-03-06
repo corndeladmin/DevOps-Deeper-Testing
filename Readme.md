@@ -10,9 +10,12 @@ This workshop assumes you have a recent version of node/npm installed. If not, y
 
 > Note that since we will be triggering a browser session from the command line in various exercises, WSL on Windows will not be an option.
 
-## Exercises
+Before you start the exercises, fork this repo and clone it onto your local machine.
 
 > Each exercise is configured as a separate codebase so if you want VSCode to correctly handle intellisense etc., it is best to open each subfolder directly in VSCode during that exercise.
+
+## Exercises
+
 
 Part 1 - End to End testing:
 * [Selenium](./e2e-selenium/Readme.md)
