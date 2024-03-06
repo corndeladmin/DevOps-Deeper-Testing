@@ -8,7 +8,7 @@ Feel free to choose a different path through the exercises, but we recommend the
 
 This workshop assumes you have a recent version of node/npm installed. If not, you can install those [here](https://nodejs.org/en/download/).
 
-> Note that since we will be triggering a browser session from the command line in various exercises, WSL on Windows will not be an option.
+> Note that since we will be triggering a browser session from the command line in various exercises, [you can view the instructions here for WSL on Windows](./wsl.md).
 
 ## Exercises
 
