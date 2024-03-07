@@ -58,6 +58,8 @@ Have a play with the following debugging helpers:
   * This will capture the network activity during the test, so it can be replayed later
   * View these through the Trace Viewer either with the `playwright show-trace <path>` command, or [through the online viewer](https://trace.playwright.dev/)
 
+> Some learners have reported that arguments are only recognised when passed with an `=`, e.g. `--screenshot=on` rather than `--screenshot on`; if the flags seem to be being ignored, then try the alternative syntax.
+
 ### Further Reading
 
 - Take a look at [the Playwright best practices](https://playwright.dev/docs/best-practices)

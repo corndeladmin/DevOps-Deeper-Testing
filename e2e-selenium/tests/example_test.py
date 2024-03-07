@@ -37,4 +37,6 @@ def test_chrome_open_google(driver):
     search_box.send_keys("Hey look, I'm using selenium!")
     search_box.send_keys(Keys.RETURN)
 
+    # Leave the screen up for a few seconds
+    # just while we're watching the tests directly
     sleep(3)
