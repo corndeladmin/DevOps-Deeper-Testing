@@ -156,6 +156,11 @@ In order to do this, first create a new artillery config script in `artillery-pl
 ```yml
 config:
   target: https://www.artillery.io
+  phases:
+    - duration: 5
+      arrivalRate: 1
+      rampTo: 2
+      name: Warm up phase
   # Load the Playwright engine:
   engines:
     playwright: {}
@@ -167,17 +172,16 @@ scenarios:
 
 Playwright comes bundled with Artillery so there's no extra installation required, and we can immediately use it to start generating our new test:
 
-`npx playwright codegen artillery.io`
+`npx playwright codegen artillery.io --target javascript`
 
-> Make sure that your Playwright output panel is set to "Node: Library" and isn't trying to use Python still, or the "Node: Test" option!
-
-Copy the contents of that test and add it to a new file called `flows.js` that follows the structure below:
+Copy the contents of that test and add it to a new file called `flows.js` which should follow the structure below:
 ```javascript
 const { chromium } = require('playwright');
 
 (async () => {
   const browser = await chromium.launch({
-    headless: false
+    // Note this will be set "false" when generating the code
+    headless: true
   });
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -191,7 +195,9 @@ const { chromium } = require('playwright');
 })();
 ```
 
-Take a look at the `first-test.yml`, and decide if you want to add any more structure to your test, for example do you want a series of phases?
+> Note that the code generation will set headless to false; if you are running the test for more than a single user, then you will want to leave headless mode on!
+
+Take a look at the `first-test.yml`, and decide if you want to add any more structure to your test.
 
 When you're ready, start your tests with `npx artillery run artillery-playwright.yml`.
 

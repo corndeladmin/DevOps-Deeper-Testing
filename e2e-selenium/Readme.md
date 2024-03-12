@@ -25,29 +25,42 @@ You should then be able to run the existing test with `poetry run pytest` - chec
 ## Now it's your turn
 
 ### Extend the steps
-Have a play with the Selenium code written, and extend the test to click on the first linked website that appears.
+Have a look over the Selenium code written in `tests/example_test.py`. You can then have a go at using Selenium to navigate Selenium's own website!
 
-> Without control over how Google shows the information on the page, this may not be as easy as it sounds!
-
-Feel free to hardcode values to start with (e.g. the link text), but ultimately we want this to work for different typed text.
+Update the test to instead visit [https://www.selenium.dev/](https://www.selenium.dev/) and navigate - can you switch to the "Documentation" tab, and then successfully manipulate the search box & click on the first suggested link?
 
 You may want to look at the docs for:
+* [Locating by Class](https://selenium-python.readthedocs.io/locating-elements.html#locating-elements-by-class-name)
 * [Locating by XPath](https://selenium-python.readthedocs.io/locating-elements.html#locating-by-xpath)
 * [Locating by Link Text](https://selenium-python.readthedocs.io/locating-elements.html#locating-hyperlinks-by-link-text)
 
+If you see problems with Selenium expecting things before the page is ready, then read the section [on Waiting](#on-waiting) below.
+
 > Selenium can be a little slow to fire up, so your feedback loop for testing different code can easily crawl! A good pattern is to add an appropriate breakpoint and run your test in debugging mode, so you can take advantage of the Debug Console for quick experimentation of different code.
 
-<details> <summary>Hint</summary>
+### On Waiting
 
-Unfortunately, if you try getting the first `<a>` tag, you'll find it's not the desired search result.
+When you interact with a webpage, its response isn't instantaneous. Sometimes Selenium will attempt to complete an action before the page is ready, causing it to fail. For example, if you imagine typing some words in Google's search box and then trying to hit the first auto-complete suggestion, before the browser has managed to render the options.
 
-First we need to find a consistent route to navigate the HTML that we can describe. Can you find any ids that get us to the correct part of the page?
+Sometimes we need to advise our testing code to be aware of this and whilst often the easiest approach is simply to tell our test to sleep, it is a bad habit! Enforcing sleeps is a great way to make our testing loop arbitrarily slower, whilst missing the underlying cause and therefore still often triggering flaky behaviour.
 
-One way to do this is to find the first anchor tag (`<a>`) that sits within the search results.
+ Selenium offers two approaches to waiting:
 
-We can do that either as part of a complex XPath string, or by iterating over anchor tags in Python.
+**Implicit Waits** are where we tell Selenium a standard rule of how long to look for things. The default is 0, so Selenium will immediately fail if an element isn't found, but when overridden is set for the lifetime of the WebDriver.
+```python
+# Poll the webpage for *up to* 10 seconds when looking for 
+# elements that aren't immediately available
+driver.implicitly_wait(10)
+```
 
-</details>
+**Explicit Waits** are a tool for specifying explicitly what to wait for before proceeding to the next step. For example the code below waits until the `slowLoadingElement` is found on [the DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction).
+```python
+element = WebDriverWait(driver, 10).until(
+    expected_conditions.presence_of_element_located((By.ID, "slowLoadingElement"))
+)
+```
+
+[If you're interested, Selenium has more info on waiting here.](https://selenium-python.readthedocs.io/waits.html)
 
 ### Save an output screenshot
 
