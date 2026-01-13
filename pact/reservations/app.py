@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 
-from pact.reservations.reservation import Reservation
+from reservation import Reservation
 
 app = Flask(__name__)
 
@@ -30,7 +30,7 @@ def get_bookings():
 @app.route("/reserve", methods=["POST"])
 def book():
     data = request.json
-    new_reservation_date = datetime.strptime(data["date"], "%d/%m/%y")
+    new_reservation_date = datetime.strptime(data["date"], "%Y-%m-%d")
     user_id = data["user_id"]
 
     reservations_on_date = [
@@ -40,6 +40,8 @@ def book():
     ]
 
     if (len(reservations_on_date) < MAX_BOOKINGS_PER_DAY):
+        new_reservation = Reservation(user_id, new_reservation_date)
+        reservations.append(new_reservation)
         return jsonify({"message": "Booking successful!"}), 200
     else:
         return jsonify({"message": "Date already fully booked!"}), 400

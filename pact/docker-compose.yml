@@ -1,0 +1,14 @@
+services:
+  reservations:
+    build:
+      context: ./reservations
+      dockerfile: ./dockerfile
+  
+  restaurant:
+    build:
+      context: ./restaurant
+      dockerfile: ./dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - ./restaurant/.env.docker

@@ -13,4 +13,4 @@ def test_reservation_serialisation():
     reservation_json = reservation.to_json()
 
     # Assert
-    assert reservation_json["reservation_date"] == "05/12/25"
+    assert reservation_json["reservation_date"] == "2025-12-05"

@@ -8,5 +8,5 @@ class Reservation:
     def to_json(self) -> dict[str, str]:
         return {
             "user_id": self.user_id,
-            "reservation_date": self.reservation_date.strftime("%d/%m/%y")
+            "reservation_date": self.reservation_date.strftime("%Y-%m-%d")
         }
