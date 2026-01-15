@@ -30,7 +30,7 @@ def get_bookings():
 @app.route("/reserve", methods=["POST"])
 def book():
     data = request.json
-    new_reservation_date = datetime.strptime(data["date"], "%Y-%m-%d")
+    new_reservation_date = datetime.strptime(data["reservation_date"], "%Y-%m-%d")
     user_id = data["user_id"]
 
     reservations_on_date = [

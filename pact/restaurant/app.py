@@ -1,10 +1,8 @@
-from flask import Flask, json, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from datetime import datetime
-import os
 
-import requests
-
-RESERVATIONS_API_BASE_URL = os.getenv("RESERVATIONS_HOST")
+from reservation import Reservation
+from reservations_client import ReservationClient
 
 app = Flask(__name__)
 
@@ -15,12 +13,13 @@ def index():
 
 @app.route("/api/bookings", methods=["GET"])
 def get_bookings():
-    reservations_response = requests.get(f"{RESERVATIONS_API_BASE_URL}/reservations")
-    reservations_response.raise_for_status()
-    reservations_json = reservations_response.json()
+    reservations_client = ReservationClient()
+
+    reservations = reservations_client.get_reservations()
+
     bookings = [
-        datetime.strptime(reservation["reservation_date"], "%Y-%m-%d")
-        for reservation in reservations_json
+        reservation.reservation_date
+        for reservation in reservations
     ]
 
     return jsonify([booking.strftime("%Y-%m-%d") for booking in bookings])
@@ -30,15 +29,11 @@ def get_bookings():
 def book():
     data = request.json
     booking_date = datetime.strptime(data["date"], "%Y-%m-%d")
-    request_object = {
-        "date": data["date"],
-        "user_id": "Test"
-    }
-    request_body = json.dumps(request_object)
-    headers = { 'Content-type': 'application/json' }
-    response = requests.post(f"{RESERVATIONS_API_BASE_URL}/reserve", data = request_body, headers = headers)
+    reservation = Reservation("Test", booking_date)
 
-    response.raise_for_status()
+    reservations_client = ReservationClient()
+
+    reservations_client.book_reservation(reservation)
 
     app.logger.debug(f"Reservation made for date {booking_date}")
 
