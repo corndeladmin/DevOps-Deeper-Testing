@@ -3,49 +3,49 @@ from datetime import datetime
 
 from reservation import Reservation
 
-app = Flask(__name__)
 
-MAX_BOOKINGS_PER_DAY = 3
-frequent_user_id = "0f06e8c2-7561-42b1-bdff-1fb352f01843"
-todays_date = datetime.now()
-default_reservations = [
-    Reservation(frequent_user_id, todays_date),
-    Reservation(frequent_user_id, todays_date),
-    Reservation(frequent_user_id, todays_date),
-]
+def create_app():
+    app = Flask(__name__)
 
-reservations = [*default_reservations]
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
-@app.route("/reservations", methods=["GET"])
-def get_bookings():
-    return jsonify([reservation.to_json() for reservation in reservations])
-
-
-@app.route("/reserve", methods=["POST"])
-def book():
-    data = request.json
-    new_reservation_date = datetime.strptime(data["reservation_date"], "%Y-%m-%d")
-    user_id = data["user_id"]
-
-    reservations_on_date = [
-        reservation
-        for reservation in reservations
-        if reservation.reservation_date.date() == new_reservation_date.date()
+    MAX_BOOKINGS_PER_DAY = 3
+    frequent_user_id = "0f06e8c2-7561-42b1-bdff-1fb352f01843"
+    todays_date = datetime.now()
+    default_reservations = [
+        Reservation(frequent_user_id, todays_date),
+        Reservation(frequent_user_id, todays_date),
+        Reservation(frequent_user_id, todays_date),
     ]
 
-    if (len(reservations_on_date) < MAX_BOOKINGS_PER_DAY):
-        new_reservation = Reservation(user_id, new_reservation_date)
-        reservations.append(new_reservation)
-        return jsonify({"message": "Booking successful!"}), 200
-    else:
-        return jsonify({"message": "Date already fully booked!"}), 400
+    reservations = [*default_reservations]
+
+
+    @app.route("/reservations", methods=["GET"])
+    def get_bookings():
+        return jsonify([reservation.to_json() for reservation in reservations])
+
+
+    @app.route("/reserve", methods=["POST"])
+    def book():
+        data = request.json
+        new_reservation_date = datetime.strptime(data["reservation_date"], "%Y-%m-%d")
+        user_id = data["user_id"]
+
+        reservations_on_date = [
+            reservation
+            for reservation in reservations
+            if reservation.reservation_date.date() == new_reservation_date.date()
+        ]
+
+        if (len(reservations_on_date) < MAX_BOOKINGS_PER_DAY):
+            new_reservation = Reservation(user_id, new_reservation_date)
+            reservations.append(new_reservation)
+            return jsonify({"message": "Booking successful!"}), 200
+        else:
+            return jsonify({"message": "Date already fully booked!"}), 400
+        
+    return app
 
 
 if __name__ == "__main__":
+    app = create_app()
     app.run(debug=True, port=8400)
