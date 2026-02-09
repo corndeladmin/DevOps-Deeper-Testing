@@ -6,13 +6,16 @@ import os
 from reservation import Reservation
 
 
-class ReservationClient:
-    def __init__(self):
-        self.RESERVATIONS_API_BASE_URL = os.getenv("RESERVATIONS_HOST")
+class ReservationsClient:
+    def __init__(self, reservations_host_url = None):
+        if (reservations_host_url is not None):
+            self.reservations_host_url = reservations_host_url
+        else:
+            self.reservations_host_url = os.getenv("RESERVATIONS_HOST")
 
     def get_reservations(self) -> list[Reservation]:
         reservations_response = requests.get(
-            f"{self.RESERVATIONS_API_BASE_URL}/reservations"
+            f"{self.reservations_host_url}/reservations"
         )
         reservations_response.raise_for_status()
         reservations_json = reservations_response.json()
@@ -29,7 +32,7 @@ class ReservationClient:
         request_body = json.dumps(reservation.to_json())
         headers = {"Content-type": "application/json"}
         response = requests.post(
-            f"{self.RESERVATIONS_API_BASE_URL}/reserve",
+            f"{self.reservations_host_url}/reserve",
             data=request_body,
             headers=headers,
         )

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 
 from reservation import Reservation
-from reservations_client import ReservationClient
+from reservations_client import ReservationsClient
 
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ def index():
 
 @app.route("/api/bookings", methods=["GET"])
 def get_bookings():
-    reservations_client = ReservationClient()
+    reservations_client = ReservationsClient()
 
     reservations = reservations_client.get_reservations()
 
@@ -31,7 +31,7 @@ def book():
     booking_date = datetime.strptime(data["date"], "%Y-%m-%d")
     reservation = Reservation("Test", booking_date)
 
-    reservations_client = ReservationClient()
+    reservations_client = ReservationsClient()
 
     reservations_client.book_reservation(reservation)
 

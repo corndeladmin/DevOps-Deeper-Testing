@@ -3,20 +3,21 @@ from datetime import datetime
 
 from reservation import Reservation
 
+frequent_user_id = "0f06e8c2-7561-42b1-bdff-1fb352f01843"
+todays_date = datetime.now()
 
-def create_app():
+default_reservations = [
+    Reservation(frequent_user_id, todays_date),
+    Reservation(frequent_user_id, todays_date),
+    Reservation(frequent_user_id, todays_date),
+]
+
+def create_app(reservations = default_reservations):
     app = Flask(__name__)
 
     MAX_BOOKINGS_PER_DAY = 3
-    frequent_user_id = "0f06e8c2-7561-42b1-bdff-1fb352f01843"
-    todays_date = datetime.now()
-    default_reservations = [
-        Reservation(frequent_user_id, todays_date),
-        Reservation(frequent_user_id, todays_date),
-        Reservation(frequent_user_id, todays_date),
-    ]
 
-    reservations = [*default_reservations]
+    app.reservations = reservations
 
 
     @app.route("/reservations", methods=["GET"])

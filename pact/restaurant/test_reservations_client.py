@@ -1,7 +1,7 @@
 from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
 from reservation import Reservation
-from reservations_client import ReservationClient
+from reservations_client import ReservationsClient
 import requests
 
 TEST_DATE = "2026-12-25"
@@ -14,7 +14,7 @@ def test_get_reservations(monkeypatch):
     
     # This replaces any call to requests.get with our own function
     monkeypatch.setattr(requests, 'get', get_stub)
-    reservation_client = ReservationClient()
+    reservation_client = ReservationsClient()
 
     # ACT
     reservations = reservation_client.get_reservations()
@@ -32,7 +32,7 @@ def test_book_reservations(monkeypatch):
     
     # This replaces any call to requests.post with our own function
     monkeypatch.setattr(requests, 'post', post_stub)
-    reservation_client = ReservationClient()
+    reservation_client = ReservationsClient()
     reservation = Reservation("Test User", datetime.strptime(TEST_DATE, "%Y-%m-%d"))
 
     # ACT
