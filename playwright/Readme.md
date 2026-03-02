@@ -2,7 +2,7 @@
 
 ## Before you start
 
-As with Selenium, this assumes you have `poetry` installed. Unlike Selenium, Playwright will attempt to download a browser for you by default if it's not already installed.
+Unlike Selenium, Playwright will attempt to download a browser for you by default if it's not already installed.
 
 ## What is Playwright?
 
@@ -10,15 +10,15 @@ Like Selenium, Playwright is an end-to-end testing tool focused on writing tests
 
 ## Try it out
 
-Set up the project with `poetry install`, and then run `poetry run playwright install` to get Playwright to set up the required browsers.
+Set up the project with `pip install -r requirements.txt`, and then run `playwright install` to get Playwright to set up the required browsers.
 
-Run `poetry run pytest` to execute the tests. Note that Playwright chooses to default to headless mode, unlike Selenium. Try running them visibly, on Chromium, by adding the `--headed` flag (`poetry run pytest --headed`) or try running them on an alternative browser, e.g. with `--browser firefox`.
+Run `pytest` to execute the tests. Note that Playwright chooses to default to headless mode, unlike Selenium. Try running them visibly, on Chromium, by adding the `--headed` flag (`pytest --headed`) or try running them on an alternative browser, e.g. with `--browser firefox`.
 
 ## Now it's your turn
 
 A nice feature of Playwright is the ability to generate the code for your tests by interacting with a browser directly. Give that a go, and add a new test exploring [the Playwright demo site](https://demo.playwright.dev/todomvc) by using the `codegen` option:
 ```
-poetry run playwright codegen --target python-pytest demo.playwright.dev/todomvc
+playwright codegen --target python-pytest demo.playwright.dev/todomvc
 ```
 
 E.g. create a test that:
